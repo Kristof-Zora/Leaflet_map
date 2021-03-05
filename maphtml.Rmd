@@ -1,0 +1,156 @@
+---
+title: "Sightseeing in Berlin"
+author: "Kristóf Sz."
+date: '2021 03 05 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Berlin
+
+I was in Berlin first in 2016 and this city of Europe, which is the capital of Germany, is so beautiful, that I would like to give you some tipps. The list of sightseeings you must see:
+
+- Brandenburger Tor
+- Bebel PLatz
+- Pergamonmuseum
+- Reichstag
+- Berliner Dom
+- Checkpoint Charlie
+- Siegessäule
+- Alexanderplatz
+- Zoologischer Garten Berlin
+- Kaiser Wilhelm-Gedächtnis-Kirche
+- Gedenkstätte Berliner Mauer (Bernauer Straße)
+- Unter den Linden
+
+```{r, echo=FALSE}
+library(knitr)
+library(leaflet)
+
+plots<-list.files('.', pattern="*.jpg",
+                  full.names = TRUE)
+
+include_graphics(plots[1:4])
+include_graphics(plots[5:8])
+include_graphics(plots[9:12])
+```
+
+
+And where can be found these places?
+
+```{r, echo=FALSE, comment=""}
+df<-data.frame(name=c("Brandenburger Tor","Bebel Platz",
+                       "Pergamonmuseum","Reichstag",
+                       "Berliner Dom","Checkpoint Charlie",
+                       "Siegessäule","Alexanderplatz",
+                       "Zoologischer Garten Berlin",
+                       "Kaiser Wilhelm-Gedächtnis-Kirche",
+                       "Gedenkstätte Berliner Mauer (Bernauer Straße)",
+                       "Unter den Linden"),
+                lat=c(52.516470214977964,
+                      52.516848208354396,
+                      52.52133796257648,
+                      52.51909935186394,
+                      52.51953616289787,
+                      52.50788023094092,
+                      52.5149479910393,
+                      52.52273564746541,
+                      52.50857173302999,
+                      52.5052271286444,
+                      52.53585514586697,
+                      52.51702409964071),
+                lng=c(13.378033935341255,
+                      13.394927707130133,
+                      13.398073770840258,
+                      13.377345676236637,
+                      13.401902336703582,
+                      13.391531593945635,
+                      13.351529856914164,
+                      13.416349312475248,
+                      13.339935682917975,
+                      13.3365904287116,
+                      13.39096850258321,
+                      13.390017891182145),
+                type=c("building","building",
+                       "museum","building",
+                       "church","history",
+                       "history","building"
+                       ,"zoo","church",
+                       "history","street"))
+
+df$type<-as.factor(df$type)
+
+factpal <- colorFactor(topo.colors(5), df$type)
+
+
+
+df %>% leaflet() %>% addTiles() %>% 
+        addCircleMarkers(lat = ~lat, lng = ~lng,
+                         color = ~factpal(type),
+                         label = ~name,
+                         clusterOptions = markerClusterOptions()) %>%
+        addLegend(pal = factpal, value=~type)
+
+```
+
+The code for the previous map:
+
+```{r, echo=TRUE, eval=FALSE, comment=""}
+df<-data.frame(name=c("Brandenburger Tor","Bebel Platz",
+                       "Pergamonmuseum","Reichstag",
+                       "Berliner Dom","Checkpoint Charlie",
+                       "Siegessäule","Alexanderplatz",
+                       "Zoologischer Garten Berlin",
+                       "Kaiser Wilhelm-Gedächtnis-Kirche",
+                       "Gedenkstätte Berliner Mauer (Bernauer Straße)",
+                       "Unter den Linden"),
+                lat=c(52.516470214977964,
+                      52.516848208354396,
+                      52.52133796257648,
+                      52.51909935186394,
+                      52.51953616289787,
+                      52.50788023094092,
+                      52.5149479910393,
+                      52.52273564746541,
+                      52.50857173302999,
+                      52.5052271286444,
+                      52.53585514586697,
+                      52.51702409964071),
+                lng=c(13.378033935341255,
+                      13.394927707130133,
+                      13.398073770840258,
+                      13.377345676236637,
+                      13.401902336703582,
+                      13.391531593945635,
+                      13.351529856914164,
+                      13.416349312475248,
+                      13.339935682917975,
+                      13.3365904287116,
+                      13.39096850258321,
+                      13.390017891182145),
+                type=c("building","building",
+                       "museum","building",
+                       "church","history",
+                       "history","building"
+                       ,"zoo","church",
+                       "history","street"))
+
+df$type<-as.factor(df$type)
+
+factpal <- colorFactor(topo.colors(5), df$type)
+
+
+
+df %>% leaflet() %>% addTiles() %>% 
+        addCircleMarkers(lat = ~lat, lng = ~lng,
+                         color = ~factpal(type),
+                         label = ~name,
+                         clusterOptions = markerClusterOptions()) %>%
+        addLegend(pal = factpal, value=~type)
+
+```
+
+I hope that this little tour has picqued you interest and made you feel to visit Berlin.
